@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="title='文章管理',active='article'">
+<!--/*<header th:replace="admin/header::headerFragment(${title},${active})"></header>*/-->
+<<body class="fixed-left">
+<div id="wrapper">
+    <!--/*<div th:replace="admin/header::header-body"></div>*/-->
+    <div class="content-page">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 class="page-title">文章管理</h4>
+                    </div>
+                    <div class="col-md-12">
+                        <table id="table" data-toggle="table" data-url="queryAllJson.do"
+                               data-pagination="true" data-side-pagination="server"
+                               data-page-list="[ 10,20,50,100]"
+                               data-query-params="queryParams" data-height="100%">
+                            <thead>
+                            <tr>
+                                <th data-field="userName" width="35%">用户名称</th>
+                                <th data-field="nickName" width="15%">用户昵称</th>
+                                <th data-field="birthday">生日</th>
+                                <th data-field="gender">性别</th>
+                                <th data-field="phone" width="8%">手机号</th>
+                                <th data-field="email">邮箱</th>
+                                <th data-formatter="actionFormatter">操作</th>
+                            </tr>
+                            </thead>>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                        <!--/*<div th:replace="comm/macros :: pageAdminNav(${articles})"></div>*/-->
+                    </div>
+                </div>
+                <div th:replace="admin/footer :: footer-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/*<div th:replace="admin/footer :: footer"></div>*/-->
+<script type="text/javascript">
+    //table设置查询参数
+    function queryParams(params) {  //配置参数
+        var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+            sort: params.sort,  //排序列名
+            order: params.order,//排位命令（desc，asc）
+            //limit: params.limit,   //每页显示多少条记录
+            //offset: params.offset,  //从多少调记录开始显示
+            limit: params.limit,
+            offset: (params.offset / params.limit) + 1//调整对应后台pageNo
+            //search: encodeURI(params.search==undefined?"":params.search)  //模糊查询
+        };
+        return temp;
+    }
+
+    //table操作栏格式显示
+    function actionFormatter(value, row, index) {
+        var rString =['<a href="javascript:;" onclick="doUpdate(' + "'" + row.id + "'" + ')" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i>编辑</a>' + '&nbsp;'
+        + '<a href="javascript:;" onclick="doRemove(' + "'" + row.id + "'" + ')" class="btn btn-xs btn-danger"><i class="fa fa-remove"></i>删除</a>'].join('');
+        return rString;
+    }
+</script>
+</body>
+</html>

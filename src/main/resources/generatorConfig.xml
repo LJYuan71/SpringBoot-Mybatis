@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 需要指明数据库连接器的绝对路径 -->
+    <classPathEntry
+            location="D:\mavenCK\mysql\mysql-connector-java\8.0.15\mysql-connector-java-8.0.15.jar"/>
+    <!-- targetRuntime:MyBatis3默认会生成Example，MyBatis3Simple:不生成Example -->
+    <context id="sqlserverTables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 生成的pojo，将implements Serializable-->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 由于beginningDelimiter和endingDelimiter的默认值为双引号(")，在Mysql中不能这么写，所以还要将这两个默认值改为`  -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+
+        <!-- 自带的注释不友好,需要自己实现 -->
+        <commentGenerator type="tk.ljyuan71.plugin.CommentGenerator"/>
+
+        <!-- 数据库链接URL、用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://10.40.40.71:3306/blog"
+                        userId="root"
+                        password="123456">
+            <!-- 不同数据库存在相同表时,会造成前后覆盖问题:设置当前catalog -->
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+        <!--
+        生成model模型，对应的包路径，以及文件存放路径(targetProject)，targetProject可以指定具体的路径,如./src/main/java，
+        也可以使用“MAVEN”来自动生成，这样生成的代码会在target/generatord-source目录下
+        -->
+        <javaModelGenerator targetPackage="tk.ljyuan71.sys.model" targetProject="src/main/java" />
+
+        <!--对应的mapper.xml文件  -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+
+        <!-- 对应的Mapper接口类文件 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="tk.ljyuan71.sys.dao" targetProject="src/main/java"/>
+
+        <!-- 列出要生成代码的所有表 -->
+        <!-- 不同数据库存在相同表时,会造成前后覆盖问题：指明数据库为blog -->
+        <table tableName="sys_user" domainObjectName="SysUser" schema="blog">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+    </context>
+</generatorConfiguration>
